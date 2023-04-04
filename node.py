@@ -28,7 +28,7 @@ node_2.connect_with_node('127.0.0.1', 8003)
 node_3.connect_with_node('127.0.0.1', 8001)
 
 time.sleep(2)
-list_of_files = glob.glob('C:/Program Files/PostgreSQL/14/data/log/*')
+list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')
 sample = max(list_of_files, key=os.path.getctime)
 logsize=os.path.getsize(sample)
 while True:
@@ -42,9 +42,8 @@ while True:
         stripped = [item.strip() for item in x]
         for item in stripped:
             node_1.send_to_nodes(item)
-            block = bc.process_block(item, "transaction")
-            bc.add_block(block)
-            bc.get_block(i)
+            block = bc.create_block(item)
+            print(bc.print_previous_block())
             i+=1
     else:
         print('file has not been changed!')
