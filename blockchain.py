@@ -2,15 +2,7 @@ import json
 import hashlib
 import sqlite3
 from datetime import time, date, datetime
-
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_v1_5 as PKCS1_v1_5_Cipher
-from Crypto.Signature import PKCS1_v1_5 as PKCS1_v1_5_Signature
-from Crypto.Hash import SHA512
-from Crypto.Cipher import AES
-from Crypto.Protocol.KDF import PBKDF2
-from Crypto import Random
-from base64 import b64decode, b64encode
+from cryptography import x509,fernet
 
 class Blockchain:
 
