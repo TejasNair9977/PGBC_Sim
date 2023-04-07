@@ -15,8 +15,8 @@ The way this can be used is:-
 
 ## Instructions
 ### Do these in order in root directory to install
-<code>
-psql -U postgres
+
+<pre><code>psql -U postgres
 
 {password}
 
@@ -35,7 +35,7 @@ exit
 cd backend
 
 node listen.js
-</code>
+</code></pre>
 
 TBD for now!!
 
