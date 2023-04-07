@@ -47,6 +47,7 @@ while True:
             i+=1
     else:
         print('file has not been changed!')
-
+    
+    print(bc.chain_valid(bc.chain)) 
     time.sleep(2)
     

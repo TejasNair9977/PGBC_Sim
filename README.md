@@ -13,6 +13,35 @@ The way this can be used is:-
 * E-commerce platforms, where a ledger system can help manage transactions between buyers and sellers and ensure the accuracy of inventory and shipping information.
 * Cryptocurrency and blockchain systems, where a ledger system is used to record all transactions on the network and ensure the accuracy and security of the system.
 
+## Instructions
+### Do these in order in root directory to install
+<code>
+psql -U postgres
+
+{password}
+
+\c {database_name}
+
+CREATE FUNCTION public.notify() RETURNS trigger LANGUAGE 'plpgsql' AS `$FUNCTION$` BEGIN PERFORM pg_notify('change', row_to_json(NEW)::text); RETURN NEW; END; `$FUNCTION$`;
+
+CREATE TRIGGER update AFTER UPDATE ON {table_name} FOR EACH ROW EXECUTE PROCEDURE notify()
+
+CREATE TRIGGER remove AFTER DELETE ON {table_name} FOR EACH ROW EXECUTE PROCEDURE notify()
+
+CREATE TRIGGER change AFTER INSERT ON {table_name} FOR EACH ROW EXECUTE PROCEDURE notify()
+
+exit
+
+cd backend
+
+node listen.js
+</code>
+
+TBD for now!!
+
+After installing PostgreSQL
+Make sure to change log_collector to "on", log_statement to "all", log_destination to "jsonlog" in PostgreSQL's config
+
 ## Functionalities
 The functionalities are listed as:-
 * Recording transactions: The system should be able to record all types of transactions, including sales, purchases, transfers, and other financial events.
@@ -25,7 +54,3 @@ Reporting and analysis: The system should be able to generate reports and provid
 
 ### To be added
 We will add encryption for security, frontend for having something to show visually, and  transaction approvals in order to make sure that all new transactions are correct, and finally implementing these within GCP and AMD instances within these next 2 weeks.
-
-# Instructions
-After installing PostgreSQL
-Make sure to change log_collector to "on", log_statement to "all", log_destination to "jsonlog" in PostgreSQL's config

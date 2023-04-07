@@ -12,8 +12,7 @@ class Blockchain:
         new_proof = 1
         check_proof = False
         while check_proof is False:
-            hash_operation = hashlib.sha256(
-                str(new_proof**2 - previous_proof**2).encode()).hexdigest()
+            hash_operation = hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).hexdigest()
             if hash_operation[:5] == '00000':
                 check_proof = True
             else:
@@ -21,12 +20,13 @@ class Blockchain:
         return new_proof
 
     def create_block(self, data):
-        prev_hash = self.print_previous_block()["proof"]
+        prev_proof = self.print_previous_block()["proof"]
+        new_proof=self.proof_of_work(prev_proof)   
         block = {'index': len(self.chain) + 1,
                  'timestamp': str(datetime.datetime.now()),
-                 'proof': self.proof_of_work(prev_hash),
+                 'proof': new_proof,
                  'data': data,
-                 'previous_hash': prev_hash}
+                 'previous_hash': self.hash(self.print_previous_block())}
         self.chain.append(block)
         return block
 

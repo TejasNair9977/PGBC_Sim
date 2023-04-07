@@ -1,0 +1,12 @@
+{
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TejasNair9977/PGBC_Sim.git"
+  },
+  "description": "A ledger system synchronized between nodes in a network with no hierarchy for PostgreSQL",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "pg": "^8.10.0"
+  }
+}
