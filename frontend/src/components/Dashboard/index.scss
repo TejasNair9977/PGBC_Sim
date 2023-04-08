@@ -1,0 +1,82 @@
+.chart-box {
+    position: relative;
+    background-color: #1c1c25;
+    margin-top: 12vh;
+    border-radius: 5px;
+    width: 89vw;
+    clear: left;
+    height: 62.93706293706294vh;
+
+    #blackbox1 {
+        position: relative;
+        float: left;
+        top: 5vh;
+        left: 2.5vw;
+        width: 45vw;
+        height: 8vw;
+        background-color: #121212;
+        border-radius: 5px;
+        z-index: 1;
+    
+        #bbspan1{
+            position: relative;
+            font-family: Inter;
+            font-size: 25px;
+            font-weight: 500;
+            color: #DCDCDC;
+            top: 3vh;
+            left: 2.5vw;
+        }
+    
+    }
+
+    ul {
+        position: relative;
+        top: 5vh;
+        left: 10vw;
+        li {
+            list-style: none;
+            display: inline-block;
+            padding: 10px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            text-align: center;
+            margin-right: 50px;
+            font-weight: 600;
+            background-color: #121212;
+            border-radius: 2px;
+            color:#DCDCDC;
+    
+    
+    
+        }
+    }
+}
+
+.square-box {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-top: 13vh;
+    height: 50vh;
+    width: 48%;
+
+    background-color: #1C1C25;
+    border-radius: 5px;
+
+    span {
+        position: relative;
+        color: #DCDCDC;
+        font-size: 26px;
+        font-family: Inter;
+        font-weight: 600;
+        text-align: left;
+        top: 5vh;
+        left: 2.5vw;
+    }
+
+  }
+
+  .timegraph {
+    margin-right: 4%;
+  }
