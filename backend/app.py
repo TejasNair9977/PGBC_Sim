@@ -1,13 +1,16 @@
 from fastapi import FastAPI
+from apis import apis as api
 
 app = FastAPI()
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    api.initiate()
+    return {"message": "Connection Complete"}
 
 
 @app.get("/change")
 async def root():
+    api.change()
     return {"message": "There was a change in the database"}
