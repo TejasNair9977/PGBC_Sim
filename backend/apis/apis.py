@@ -32,21 +32,20 @@ def initiate():
     return {"Connection status":"Successful"}
 
 def change():
-    blocks=[]
     global nodelist
     global bc
     list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')
     sample = max(list_of_files, key=os.path.getctime)
-    logsize=os.path.getsize(sample)
-    with open(sample, 'r') as fp:
-        fp.seek(logsize)
-        x = fp.readlines()
-    logsize=os.path.getsize(sample)
-    stripped = [item.strip() for item in x]
-    for item in stripped:
-        nodelist[0].send_to_nodes(item)
-        block = bc.create_block(item)
-        blocks.append(block)
-        print(bc.print_previous_block())
-        i+=1
-    return {"new block":blocks}
+    with open(sample, "rb") as file:
+        try:
+            file.seek(-2, os.SEEK_END)
+            while file.read(1) != b'\n':
+                file.seek(-2, os.SEEK_CUR)
+        except OSError:
+            file.seek(0)
+        last_line = file.readline().decode()
+    print(last_line)
+    nodelist[0].send_to_nodes(last_line)
+    block = bc.create_block(last_line)
+    print(bc.print_previous_block())
+    return {"new block":block}

@@ -12,5 +12,5 @@ async def root():
 
 @app.get("/change")
 async def root():
-    api.change()
+    print(api.change())
     return {"message": "There was a change in the database"}
