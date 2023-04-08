@@ -3,18 +3,18 @@ import os
 import time
 import glob
 from blockchain import Blockchain
-from MyOwnPeer2PeerNode import MyOwnPeer2PeerNode
+from p2pnode import p2pnode
 import asyncio
-nodelist = [MyOwnPeer2PeerNode("127.0.0.1", 8001, 1)]
+nodelist = [p2pnode("127.0.0.1", 8001, 1)]
 bc = Blockchain()
 
 def initiate():
     global bc
     global nodelist
     node_1=nodelist[0]
-    node_2 = MyOwnPeer2PeerNode("127.0.0.1", 8002, 2)
+    node_2 = p2pnode("127.0.0.1", 8002, 2)
     nodelist.append(node_2)
-    node_3 = MyOwnPeer2PeerNode("127.0.0.1", 8003, 3)
+    node_3 = p2pnode("127.0.0.1", 8003, 3)
     nodelist.append(node_3)
 
     node_2.start()
