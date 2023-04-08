@@ -1,6 +1,6 @@
-require('dotenv').config()
 const { Client } = require('pg')
-
+const axios = require('axios');
+require('dotenv').config()
 const config={
     user: process.env.USER,
     password: process.env.PASSWORD,
@@ -21,4 +21,13 @@ pgClient.on('notification', async(data)=>{
     try{var payload = JSON.parse(data.payload);}
     catch{var payload = data.payload;}
     console.log('database changed somehow, payload = ',payload)
+
+    axios.get('http://localhost:8000/change')
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
 });
