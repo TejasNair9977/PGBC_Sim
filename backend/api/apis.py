@@ -8,7 +8,7 @@ import asyncio
 nodelist = [MyOwnPeer2PeerNode("127.0.0.1", 8001, 1)]
 bc = Blockchain()
 
-async def initiate():
+def initiate():
     global bc
     global nodelist
     node_1=nodelist[0]
@@ -29,7 +29,7 @@ async def initiate():
     node_2.connect_with_node('127.0.0.1', 8003)
     node_3.connect_with_node('127.0.0.1', 8001)
 
-async def change():
+def change():
     global nodelist
     global bc
     list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')
