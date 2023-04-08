@@ -1,0 +1,34 @@
+.Sidebar {
+    height: 100%;
+    width: 10vw;
+    min-height: 100vh;
+    background-color: #1C1C25;
+    float: left;
+
+}
+
+.SidebarList {
+    height: auto;
+    width: 100%;
+    padding: 0;
+
+    .navrow {
+            div {
+            display: flex;
+            position: relative;
+            top: 25vh;
+            width: 100%;
+            list-style: none;
+            margin: 0;
+            margin-bottom: 100px;
+            color: #DCDCDC;
+            justify-content: center;
+            align-items: center;
+            transform: scale(3.2);
+            &:hover {
+                background-color: #121212;
+            }
+        }
+    }
+
+}
