@@ -2,12 +2,12 @@ import os
 import time
 import glob
 from api.blockchain import Blockchain
-from api.MyOwnPeer2PeerNode import MyOwnPeer2PeerNode
+from api.p2pnode import p2pnode
 bc = Blockchain()
 
-node_1 = MyOwnPeer2PeerNode("127.0.0.1", 8001, 1)
-node_2 = MyOwnPeer2PeerNode("127.0.0.1", 8002, 2)
-node_3 = MyOwnPeer2PeerNode("127.0.0.1", 8003, 3)
+node_1 = p2pnode("127.0.0.1", 8001, 1)
+node_2 = p2pnode("127.0.0.1", 8002, 2)
+node_3 = p2pnode("127.0.0.1", 8003, 3)
 
 time.sleep(1)
 
