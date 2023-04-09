@@ -2,13 +2,11 @@ import { BarChartOutlined, DashboardOutlined } from '@mui/icons-material';
 
 const SidebarData = [
   {
-    title: "Dashboard",
-    icon: <DashboardOutlined />,
+    icon: <DashboardOutlined style={{fontSize: '50px'}} />,
     link: "/"
   },
   {
-    title: "Analytics",
-    icon: <BarChartOutlined />,
+    icon: <BarChartOutlined style={{fontSize: '50px'}} />,
     link: "/Analytics"
   },
 ];

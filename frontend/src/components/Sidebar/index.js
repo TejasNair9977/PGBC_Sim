@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import SidebarData from './SidebarData';
 import './index.scss';
+import { IconButton } from '@mui/material';
 
 const Sidebar = () => {
   return (
@@ -10,9 +11,11 @@ const Sidebar = () => {
         {SidebarData.map((val) => {
           return (
             <li key={val.id} className='navrow'>
-              <Link to={val.link}>
-                <div>{val.icon}</div>
-              </Link>
+              <NavLink activeclassname='active' activeStyle={{color:'#000000'}}>
+                <Link to={val.link}>
+                  <IconButton className='icon' activeClassName='active'>{val.icon}</IconButton>
+                </Link>
+              </NavLink>
             </li>
           );
         })}
