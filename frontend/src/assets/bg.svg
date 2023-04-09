@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
+  <defs>
+    <pattern id="p" width="100" height="100" patternUnits="userSpaceOnUse" patternTransform="rotate(62) scale(10)">
+      <path id="a" data-color="fill" fill="#673EB4" d="M-25 20h50L0-20z"></path>
+      <use xlink:href="#a" x="100"></use>
+      <use xlink:href="#a" y="100"></use>
+      <use xlink:href="#a" x="100" y="100"></use>
+    </pattern>
+  </defs>
+  <rect fill="#121212" width="100%" height="100%"></rect>
+  <rect fill="url(#p)" width="100%" height="100%"></rect>
+</svg>
+

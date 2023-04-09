@@ -25,6 +25,7 @@
     "react-loaders": "^3.0.1",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
+    "react-tsparticles": "^2.9.3",
     "recharts": "^2.5.0",
     "sass": "^1.60.0",
     "typescript": "^2.9.2",
