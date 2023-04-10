@@ -6,6 +6,10 @@ import requests
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 import asyncpg
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 peers = ["26.225.70.86"]
 bc = Blockchain()
@@ -38,10 +42,11 @@ def change():
 
 async def connect_to_db():
     conn = await asyncpg.connect(
-        user="postgres",
-        password="1234",
-        database="test",
-        host="localhost"
+        user=os.getenv("USER"),
+        password=os.getenv("PORT"),
+        host=os.getenv("HOST"),
+        port=os.getenv("PORT"),
+        database=os.getenv("DB")
     )
     return conn
 

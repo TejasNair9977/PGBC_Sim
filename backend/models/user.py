@@ -2,6 +2,6 @@ from pydantic import BaseModel
 from typing import Optional
 
 class User(BaseModel):
-    public_key: str
-    private_key: str
+    password: str
     ip_address: str
+    public_key: str
