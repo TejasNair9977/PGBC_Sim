@@ -77,3 +77,7 @@ async def makechange(block):
     bc.chain.append(block)
     response = await conn.fetch(block.data.message[11:])
     return {'new_block':response}
+
+async def query_blocks():
+    last_five = bc.return_last_five()
+    return {"last_five_blocks": last_five}

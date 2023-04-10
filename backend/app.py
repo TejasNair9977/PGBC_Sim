@@ -8,9 +8,9 @@ from fastapi_another_jwt_auth import AuthJWT
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi_another_jwt_auth.exceptions import AuthJWTException
+keys={}
 
 app = FastAPI()
-
 origins = ["*"]
 
 app.add_middleware(
@@ -35,6 +35,7 @@ async def root():
 async def root(block:Block):
     response = await api.makechange(block)
     return {"status":response}
+
 @app.post('/login')
 def login(login_schema: User, Authorize: AuthJWT = Depends()):
     if login_schema.ip_address != "127.0.0.1":
@@ -44,8 +45,10 @@ def login(login_schema: User, Authorize: AuthJWT = Depends()):
     access_token = Authorize.create_access_token(subject=login_schema.public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
     refresh_token = Authorize.create_refresh_token(subject=login_schema.public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
 
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    keys["public_key"] = public_key
+    keys["private_key"] = private_key
 
+    return {"access_token": access_token, "refresh_token": refresh_token}
 @app.get("/employees")# not needed
 async def get_employees():
     conn = await api.connect_to_db()
@@ -79,8 +82,9 @@ def protected(Authorize: AuthJWT = Depends()):
     return {"user": current_user}
 
 @app.get("/last-eight")
-async def last_eight():
-    private_key, public_key = api.generate_key_pair()
+async def last_eight(Authorize: AuthJWT = Depends()):
+    public_key = Authorize.get_jwt_subject()
+    public_key = keys["public_key"]
     public_key_bytes = public_key.encode('utf-8')
     return {"last_eight": public_key_bytes[-8:].decode()}
 
@@ -171,3 +175,8 @@ async def get_database_size():
     row = await conn.fetchrow("SELECT pg_database_size(%s) AS size;"%db)
     await conn.close()
     return {"size": row}
+
+@app.get("/query")
+async def get_last_five_blocks():
+    last_five_blocks = await api.query_blocks()
+    return last_five_blocks
