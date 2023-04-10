@@ -22,7 +22,7 @@ pgClient.on('notification', async(data)=>{
     catch{var payload = data.payload;}
     console.log('database changed somehow, payload = ',payload)
 
-    axios.get('http://localhost:8000/change')
+    axios.get('http://26.91.32.62:8000/change')
     .then(response => {
         console.log(response.data);
     })
