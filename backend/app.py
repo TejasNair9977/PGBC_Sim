@@ -33,9 +33,8 @@ async def root():
 
 @app.post("/remotechange")
 async def root(block:Block):
-    api.makechange(block)
-    return 
-
+    response = await api.makechange(block)
+    return {"status":response}
 @app.post('/login')
 def login(login_schema: User, Authorize: AuthJWT = Depends()):
     if login_schema.ip_address != "127.0.0.1":

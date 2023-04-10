@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 class Change(BaseModel):
-    timestamp:datetime
+    timestamp:str
     user:Optional[str] = None
     dbname:Optional[str] = None
     pid:int
@@ -12,7 +12,7 @@ class Change(BaseModel):
     session_id:str
     line_num:int
     ps:Optional[str] = None
-    session_start:datetime
+    session_start:str
     vxid:Optional[str] = None
     txid:int
     error_severity:str

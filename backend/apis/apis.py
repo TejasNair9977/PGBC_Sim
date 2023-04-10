@@ -43,7 +43,7 @@ def change():
 async def connect_to_db():
     conn = await asyncpg.connect(
         user=os.getenv("USER"),
-        password=os.getenv("PORT"),
+        password=os.getenv("PASSWORD"),
         host=os.getenv("HOST"),
         port=os.getenv("PORT"),
         database=os.getenv("DB")
@@ -71,6 +71,9 @@ def generate_key_pair():
     return private_pem, public_pem
 
 
-def makechange(block):
-    bc.chain.append(block)      #to be done later
-    return {'new_block':bc.print_previous_block()}
+async def makechange(block):
+    conn = await connect_to_db()
+    print(type(block))
+    bc.chain.append(block)
+    response = await conn.fetch(block.data.message[11:])
+    return {'new_block':response}

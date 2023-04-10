@@ -4,7 +4,7 @@ from models.change import Change
 
 class Block(BaseModel):
     index:int
-    timestamp: datetime
+    timestamp: str
     proof:int
     data:Change
     previous_hash:str
