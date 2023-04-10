@@ -71,4 +71,5 @@ def generate_key_pair():
 
 def makechange(block):
     bc.chain.append(block)      #to be done later
+    print()
     return {'new_block':bc.print_previous_block()}
