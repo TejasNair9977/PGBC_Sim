@@ -50,6 +50,8 @@ async def connect_to_db():
     )
     return conn
 
+def ret_db_name():
+    return os.getenv("DB")
 
 def generate_key_pair():
     private_key = rsa.generate_private_key(
@@ -71,5 +73,4 @@ def generate_key_pair():
 
 def makechange(block):
     bc.chain.append(block)      #to be done later
-    print()
     return {'new_block':bc.print_previous_block()}

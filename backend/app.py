@@ -96,69 +96,79 @@ async def get_backends(Authorize: AuthJWT = Depends()):
 @app.get("/xact_committed")
 async def get_xact_committed():
     conn = await api.connect_to_db()
-    rows = await conn.fetch("SELECT COUNT(*) FROM pg_stat_activity WHERE state = 'idle in transaction';")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select xact_committed from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"xact_committed": rows[0][0]}
+    return {"xact_committed": rows}
 
 @app.get("/xact_rolled_back")
 async def get_xact_rolled_back():
     conn = await api.connect_to_db()
-    rows = await conn.fetch("SELECT pg_stat_get_db_xact_rollback(datid) FROM pg_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select xact_rollback from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"xact_rolled_back": rows[0][0]}
+    return {"xact_rolled_back": rows}
 
 @app.get("/blocks_read")
 async def get_blocks_read():
     conn = await api.connect_to_db()
-    rows = await conn.fetch("SELECT blks_read FROM pg_stat_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select blks_read from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"blocks_read": rows[0][0]}
+    return {"blocks_read": rows}
 
 @app.get("/blocks_hit")
 async def get_blocks_hit():
     conn = await api.connect_to_db()
-    rows = await conn.fetch("SELECT blks_hit FROM pg_stat_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select blks_hit from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"blocks_hit": rows[0][0]}
+    return {"blocks_hit": rows}
 
 @app.get("/tuples_returned")
 async def get_tuples_returned():
     conn = await api.connect_to_db()
-    rows = await conn.fetch("SELECT tup_returned FROM pg_stat_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select tup_returned from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"tuples_returned": rows[0][0]}
+    return {"tuples_returned": rows}
 
 @app.get("/tuples_fetched")
 async def get_tuples_fetched():
     conn = await api.connect_to_db()
-    rows = await conn.fetch("SELECT tup_fetched FROM pg_stat_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select tup_fetched from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"tuples_fetched": rows[0][0]}
+    return {"tuples_fetched": rows}
 
 @app.get('/tuples_inserted')
 async def get_inserted_tuples():
     conn = await api.connect_to_db()
-    row = await conn.fetchrow("SELECT n_tup_ins FROM pg_stat_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select tup_inserted from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"tuples_inserted": row['n_tup_ins']}
+    return {"tuples_inserted": rows}
 
 @app.get('/tuples_updated')
 async def get_updated_tuples():
     conn = await api.connect_to_db()
-    row = await conn.fetchrow("SELECT n_tup_upd FROM pg_stat_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select tup_updated from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"tuples_updated": row['n_tup_upd']}
+    return {"tuples_updated": rows}
 
 @app.get('/tuples_deleted')
 async def get_deleted_tuples():
     conn = await api.connect_to_db()
-    row = await conn.fetchrow("SELECT n_tup_del FROM pg_stat_database WHERE datname = current_database();")
+    db = api.ret_db_name()
+    rows = await conn.fetch("select tup_deleted from pg_stat_database where datname=%s;"%db)
     await conn.close()
-    return {"tuples_deleted": row['n_tup_del']}
+    return {"tuples_deleted": rows}
 
 @app.get('/size')
 async def get_database_size():
     conn = await api.connect_to_db()
-    row = await conn.fetchrow("SELECT pg_database_size(current_database()) AS size;")
+    db = api.ret_db_name()
+    row = await conn.fetchrow("SELECT pg_database_size(%s) AS size;"%db)
     await conn.close()
-    return {"size": row['size']}
+    return {"size": row}
