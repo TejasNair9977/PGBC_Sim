@@ -180,3 +180,8 @@ async def get_database_size():
 async def get_peers():
     peers = await api.peers()
     return peers
+
+@app.get("/get_traffic")
+async def get_peers():
+    response = await api.get_total_traffic()
+    return response

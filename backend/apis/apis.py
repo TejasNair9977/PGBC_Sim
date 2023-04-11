@@ -7,18 +7,33 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 import asyncpg
 from dotenv import load_dotenv
+from apscheduler.schedulers.background import BackgroundScheduler
 
 load_dotenv()
-
-
+shared_secret = os.getenv("SECRETPASS")
 peers = ["26.225.70.86"]#TODO 
 bc = Blockchain()
 
+activity = []
+
+def passtime():
+    activity.pop(0)
+    activity.append(0)
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(passtime, 'interval', minutes=1)
+scheduler.start()
+
+def addact():
+    activity[-1]+=1
+
 def initiate():
+    activity[-1]+=1
     global bc
     return {"Connection status":"Successful"}
 
 def change():
+    activity[-1]+=1
     global bc
     list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')#TODO "Remove it"
     sample = max(list_of_files, key=os.path.getctime)
@@ -41,6 +56,7 @@ def change():
     return {"new block":block}
 
 async def connect_to_db():
+    activity[-1]+=1
     conn = await asyncpg.connect(
         user=os.getenv("USER"),
         password=os.getenv("PASSWORD"),
@@ -51,9 +67,11 @@ async def connect_to_db():
     return conn
 
 def ret_db_name():
+    activity[-1]+=1
     return os.getenv("DB")
 
 def generate_key_pair():
+    activity[-1]+=1
     private_key = rsa.generate_private_key(
         public_exponent=65537,
         key_size=2048
@@ -72,6 +90,7 @@ def generate_key_pair():
 
 
 async def makechange(block):
+    activity[-1]+=1
     conn = await connect_to_db()
     print(type(block))
     bc.chain.append(block)
@@ -79,8 +98,13 @@ async def makechange(block):
     return {'new_block':response}
 
 async def query_blocks():
+    activity[-1]+=1
     last_five = bc.return_last_five()
     return {"last_five_blocks": last_five}
 
 async def return_peers():
+    activity[-1]+=1
     return {"peers":peers}
+
+async def get_total_traffic():
+    return activity
