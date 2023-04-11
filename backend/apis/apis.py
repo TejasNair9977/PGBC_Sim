@@ -81,3 +81,6 @@ async def makechange(block):
 async def query_blocks():
     last_five = bc.return_last_five()
     return {"last_five_blocks": last_five}
+
+async def return_peers():
+    return {"peers":peers}

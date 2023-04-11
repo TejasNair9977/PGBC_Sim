@@ -180,3 +180,8 @@ async def get_database_size():
 async def get_last_five_blocks():
     last_five_blocks = await api.query_blocks()
     return last_five_blocks
+
+@app.get("/get_peers")
+async def get_peers():
+    peers = await api.peers()
+    return peers
