@@ -16,7 +16,7 @@ const defaultOptions = {
 
 
 
-const AnimateAndTitle = () => {
+  const AnimateAndTitle = () => {
     return(<>
         <ParticlesContainer></ParticlesContainer>
         <div className={classes.animate}>
@@ -24,11 +24,12 @@ const AnimateAndTitle = () => {
                 options={defaultOptions}
                 height={500}
                 width={700}
-            /><div>My Health Tracker</div>
+            /><div>PGBC</div>
 
         </div>
     </>)
 }
+
 
 
 export default AnimateAndTitle;
