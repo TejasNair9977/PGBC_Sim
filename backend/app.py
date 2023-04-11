@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends, Request
 from apis import apis as api
-from models.block import Block
 from models.user import User
 from models.settings import Settings
 from models.block import Block
@@ -36,7 +35,7 @@ async def root(block:Block):
     response = await api.makechange(block)
     return {"status":response}
 
-@app.post('/login')
+@app.post('/login')#login page
 def login(login_schema: User, Authorize: AuthJWT = Depends()):
     if login_schema.ip_address != "127.0.0.1":
         raise HTTPException(status_code=401, detail="Invalid IP address")
@@ -49,12 +48,7 @@ def login(login_schema: User, Authorize: AuthJWT = Depends()):
     keys["private_key"] = private_key
 
     return {"access_token": access_token, "refresh_token": refresh_token}
-@app.get("/employees")# not needed
-async def get_employees():
-    conn = await api.connect_to_db()
-    rows = await conn.fetch("SELECT * FROM employee")
-    await conn.close()
-    return {"employees": rows}
+
 @AuthJWT.load_config
 def get_config():
     return Settings()
@@ -66,7 +60,7 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
         content={"detail": exc.message}
     )
 
-@app.post('/refresh')
+@app.post('/refresh')#token-refresh-login
 def refresh(Authorize: AuthJWT = Depends()):
     Authorize.jwt_refresh_token_required()
 
@@ -81,13 +75,19 @@ def protected(Authorize: AuthJWT = Depends()):
     current_user = Authorize.get_jwt_subject()
     return {"user": current_user}
 
-@app.get("/last-eight")
+@app.get("/last-eight")#Nav bar ie profile name
 async def last_eight(Authorize: AuthJWT = Depends()):
     public_key = Authorize.get_jwt_subject()
     public_key = keys["public_key"]
     public_key_bytes = public_key.encode('utf-8')
     return {"last_eight": public_key_bytes[-8:].decode()}
 
+@app.get("/query")#dashboard query result
+async def get_last_five_blocks():
+    last_five_blocks = await api.query_blocks()
+    return last_five_blocks
+
+#########################Analysis##############################
 @app.get("/backends")
 async def get_backends(Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
@@ -175,12 +175,7 @@ async def get_database_size():
     row = await conn.fetchrow("SELECT pg_database_size(%s) AS size;"%db)
     await conn.close()
     return {"size": row}
-
-@app.get("/query")
-async def get_last_five_blocks():
-    last_five_blocks = await api.query_blocks()
-    return last_five_blocks
-
+##########################################################################
 @app.get("/get_peers")
 async def get_peers():
     peers = await api.peers()
