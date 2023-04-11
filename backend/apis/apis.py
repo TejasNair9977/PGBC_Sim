@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-peers = ["26.225.70.86"]
+peers = ["26.225.70.86"]#TODO 
 bc = Blockchain()
 
 def initiate():
@@ -20,7 +20,7 @@ def initiate():
 
 def change():
     global bc
-    list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')
+    list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')#TODO "Remove it"
     sample = max(list_of_files, key=os.path.getctime)
     with open(sample, "rb") as file:
         try:
