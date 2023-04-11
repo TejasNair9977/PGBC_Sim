@@ -11,7 +11,7 @@ const Layout = () => {
             <Navbar />
             <Sidebar />
             <Outlet />
-    </div>
+      </div>
   )
 }
 
