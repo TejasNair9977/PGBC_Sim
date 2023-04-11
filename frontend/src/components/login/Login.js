@@ -29,12 +29,9 @@ export default function Login() {
 
 const handleSubmit = (event) => {
   event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  const username = data.get('username');
-  const password = data.get('password');
-  const raw = JSON.stringify({ username, password });
+  const data = { username, password };
 
-  axios.post('url', raw, {
+  axios.post('url', data, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -48,8 +45,8 @@ const handleSubmit = (event) => {
   .catch(error => {
     console.log(error.response.data);
   });
-}
 
+}
 {
     }
     return (
