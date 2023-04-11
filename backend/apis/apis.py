@@ -14,14 +14,28 @@ shared_secret = os.getenv("SECRETPASS")
 peers = ["26.225.70.86"]#TODO 
 bc = Blockchain()
 
-activity = []
+larger_activity=[0,0,0,0,0,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 0,0,0,0,0,0,0,0]
+
+activity = [0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0]
 
 def passtime():
     activity.pop(0)
     activity.append(0)
 
+def hourtime():
+    larger_activity.pop(0)
+    larger_activity.append(sum(activity))
+
 scheduler = BackgroundScheduler()
 scheduler.add_job(passtime, 'interval', minutes=1)
+scheduler.add_job(hourtime, 'interval', minutes=60)
 scheduler.start()
 
 def addact():
@@ -107,4 +121,4 @@ async def return_peers():
     return {"peers":peers}
 
 async def get_total_traffic():
-    return activity
+    return {"hourly":larger_activity, "minute":activity}
