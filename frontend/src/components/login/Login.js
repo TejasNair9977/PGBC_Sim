@@ -29,16 +29,21 @@ export default function Login() {
 
 const handleSubmit = (event) => {
   event.preventDefault();
-  const data = { username, password };
+  const data = { 
+    username: username, 
+    password: password,
+  };
 
-  axios.post('url', data, {
+  axios.post('/login', data, {
     headers: {
       'Content-Type': 'application/json'
     }
   })
   .then(response => {
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem('name', response.data.username);
+    localStorage.setItem('access_token', response.data.access_token);
+    localStorage.setItem('refresh_token', response.data.refresh_token);
+    // localStorage.setItem('public_key', keys.public_key); 
+    localStorage.setItem('username', username);
     nav('/Dashboard');
     console.log(response.data);
   })
@@ -47,6 +52,7 @@ const handleSubmit = (event) => {
   });
 
 }
+
 {
     }
     return (

@@ -5,9 +5,9 @@ import './index.scss';
 import axios from 'axios';
 
 const Navbar = () => {
-  const [search, setSearch] = useState('');
   const [lastFiveBlocks, setLastFiveBlocks] = useState([]);
   const [lastEight, setLastEight] = useState('');
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     axios.get('/query').then((response) => {
@@ -17,17 +17,24 @@ const Navbar = () => {
     axios.get('/last-eight').then((response) => {
       setLastEight(response.data.last_eight);
     });
+
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
   }, []);
 
   return (
     <div className="nav-container">
-        <div className='search-bar'>
-          <input type='text' value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." />    {/* get */}
+      <form className='search-bar' onSubmit={handleSearch}>
+        <input type='text' value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." />
+        <button type='submit'>
           <img id='search' src={searchpng} alt="search icon" />
-        </div>
+        </button>
+      </form>
       <div id="blackbox">
-        <img src={tejas} alt='Profile pic' />  {/* get */}           
-        <span>Tejas Nair {lastEight}</span> {/* get */}
+        <img src={tejas} alt='Profile pic' />  {/* get */}
+        <span>{username} #{lastEight}</span>
         <ul id="3-dot-menu">
           <li></li>
           <li></li>
@@ -39,4 +46,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

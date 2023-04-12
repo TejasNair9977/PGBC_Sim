@@ -176,7 +176,7 @@ async def get_database_size():
     await conn.close()
     return {"size": row}
 ##########################################################################
-@app.get("/get_peers")
+@app.get("/get_peers") 
 async def get_peers():
     peers = await api.peers()
     return peers
