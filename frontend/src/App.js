@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import './App.scss'
-import Login from './components/Login';
+import Login from './components/login/Login';
 import Dashboard from './components/Dashboard';
 import Analytics from './components/Analytics';
 
