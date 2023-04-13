@@ -21,12 +21,12 @@ const Sidebar = () => {
         </Link> */}
         {/* <nav className={sideBar ? 'nav-menu-active' : 'nav-menu'}> */}
         <ul className='SidebarList'>
-          {SidebarData.map((val) => {
+          {SidebarData.map((val,key) => {
             return (
-              <li key={val.id} className='navrow'>
+              <li key={key} className='navrow'>
                 <NavLink activeclassname='active'>
                   <Link to={val.link}>
-                    <IconButton className='icon' activeClassName='active'>{val.icon}</IconButton>
+                    <IconButton className='icon' activeclassname='active'>{val.icon}</IconButton>
                   </Link>
                 </NavLink>
               </li>

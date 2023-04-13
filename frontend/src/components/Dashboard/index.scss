@@ -15,7 +15,8 @@
         margin-top: 12vh;
         border-radius: 5px;
         width: 89vw;
-        height: 62.93706293706294vh;
+        height: auto;
+        min-height: 82.93706293706294vh;
         padding-top: 5vh;
         justify-content: center;
     
@@ -56,18 +57,37 @@
                 background-color: #121212;
                 border-radius: 2px;
                 color:#DCDCDC;
-        
+                transition: 0.2s;
+
+                &:hover {
+                    scale: 1.2;
+                    cursor: pointer;
+                }
+                
+                button {
+                    background-color: #121212;
+                    color: #DCDCDC;
+                    border: 0;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
         
             }
         }
     
         .graph {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             width: auto;
             height: auto;
             min-width: 90%;
             min-height: 40%;
             margin-bottom: 5vh;
-            background-color: #121212;
+            background-color: #DCDCDC;
         }
     }
     
