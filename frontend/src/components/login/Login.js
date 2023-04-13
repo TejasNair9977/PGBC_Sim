@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 // import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,12 +14,14 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AnimateAndTitle from './AnimateAndTitle';
 import Card from '../UI/Card';
-import {Link}from 'react-router-dom'
 import axios from "axios";
 
 const theme = createTheme();
 
 export default function Login() {
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const nav = useNavigate();
 
@@ -34,7 +37,9 @@ const handleSubmit = (event) => {
     password: password,
   };
 
-  axios.post('/login', data, {
+  nav('/');
+
+  axios.post('http://127.0.0.1:8000/login', data, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -44,12 +49,14 @@ const handleSubmit = (event) => {
     localStorage.setItem('refresh_token', response.data.refresh_token);
     // localStorage.setItem('public_key', keys.public_key); 
     localStorage.setItem('username', username);
-    nav('/Dashboard');
     console.log(response.data);
+    nav('/');
   })
   .catch(error => {
     console.log(error.response.data);
   });
+
+  
 
 }
 
@@ -89,6 +96,8 @@ const handleSubmit = (event) => {
                                     label="Username"
                                     name="username"
                                     autoComplete="username"
+                                    value={username}
+                                    onChange={(event) => setUsername(event.target.value)}
                                     
                                 />
                                 <TextField
@@ -100,6 +109,8 @@ const handleSubmit = (event) => {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    value={password}
+                                    onChange={(event) => setPassword(event.target.value)}
                                 />
 
                                 <Button

@@ -1,0 +1,20 @@
+.Analytics-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10vh;
+    gap: 10vh;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+    .square-box{
+        display: flex;
+        flex-direction: row;
+        height: 55vh;
+        width: 70%;
+        border-radius: 5px;
+
+        background-color: #1C1C25;
+    }
+}
