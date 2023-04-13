@@ -21,12 +21,7 @@ def check_pass(pasw):
         return True
     return False
 
-activity = [0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0]
+activity = [0 for _ in range(60)]
 
 st_activity = 0
 
