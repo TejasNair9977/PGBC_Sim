@@ -1,12 +1,12 @@
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, Depends, Request
 from apis import apis as api
-from models.user import User
 from models.settings import Settings
 from models.block import Block
 from fastapi_another_jwt_auth import AuthJWT
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi_another_jwt_auth.exceptions import AuthJWTException
+
 keys={}
 
 app = FastAPI()
@@ -36,18 +36,15 @@ async def root(block:Block):
     return {"status":response}
 
 @app.post('/login')#login page
-def login(login_schema: User, Authorize: AuthJWT = Depends()):
-    if login_schema.ip_address != "127.0.0.1":
-        raise HTTPException(status_code=401, detail="Invalid IP address")
-
-    private_key, public_key = api.generate_key_pair()
-    access_token = Authorize.create_access_token(subject=login_schema.public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
-    refresh_token = Authorize.create_refresh_token(subject=login_schema.public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
-
-    keys["public_key"] = public_key
-    keys["private_key"] = private_key
-
-    return {"access_token": access_token, "refresh_token": refresh_token}
+def login(common_pass: str, Authorize: AuthJWT = Depends()):
+    if api.check_pass(common_pass):
+        private_key, public_key = api.ret_keypair()
+        access_token = Authorize.create_access_token(subject=public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
+        refresh_token = Authorize.create_refresh_token(subject=public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
+        keys["public_key"] = public_key
+        keys["private_key"] = private_key
+        return {"access_token": access_token, "refresh_token": refresh_token}
+    return {"response":"failed"}
 
 @AuthJWT.load_config
 def get_config():

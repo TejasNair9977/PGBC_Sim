@@ -8,11 +8,18 @@ from cryptography.hazmat.primitives import serialization
 import asyncpg
 from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
+import platform
+from fastapi import HTTPException
 
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
 peers = ["26.225.70.86"]#TODO 
 bc = Blockchain()
+keys = {}
+def check_pass(pasw):
+    if pasw == shared_secret:
+        return True
+    return False
 
 larger_activity=[0,0,0,0,0,0,0,0,
                  0,0,0,0,0,0,0,0,
@@ -43,13 +50,23 @@ def addact():
 
 def initiate():
     activity[-1]+=1
-    global bc
+    keys["private_key"], keys["public_key"] = generate_key_pair()
     return {"Connection status":"Successful"}
+
+def ret_keypair():
+    return {"public_key":keys["public_key"],"private_key":keys["private_key"]}
 
 def change():
     activity[-1]+=1
     global bc
-    list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')#TODO "Remove it"
+
+    if platform.system() == 'Windows':
+        list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')
+    elif platform.system() == 'Linux':
+        list_of_files = glob.glob('/var/log/postgresql/*')
+    else:
+        raise HTTPException(status_code=401, detail="Unidentified OS")
+
     sample = max(list_of_files, key=os.path.getctime)
     with open(sample, "rb") as file:
         try:
