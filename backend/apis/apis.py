@@ -13,7 +13,7 @@ from fastapi import HTTPException
 
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
-peers = ["26.225.70.86"]#TODO 
+peers = ["26.225.70.86"]
 bc = Blockchain()
 keys = [0,0]
 def check_pass(pasw):
@@ -31,9 +31,12 @@ activity = [0,0,0,0,0,0,0,0,0,0,
 st_activity = 0
 
 def minutetime():
-    activity.append(st_activity)
-    st_activity = 0
-    activity.pop(0)
+    try:
+        activity.append(st_activity)
+        st_activity = 0
+        activity.pop(0)
+    except UnboundLocalError:
+        print("Please initialize your node by calling the / API")
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(minutetime, 'interval', minutes=1)
@@ -53,8 +56,6 @@ def ret_keypair():
 
 def change():
     addact()
-    global bc
-
     if platform.system() == 'Windows':
         list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')
     elif platform.system() == 'Linux':
