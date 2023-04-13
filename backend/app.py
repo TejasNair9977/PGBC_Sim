@@ -41,8 +41,8 @@ def login(common_pass: str, Authorize: AuthJWT = Depends()):
         private_key, public_key = api.ret_keypair()
         access_token = Authorize.create_access_token(subject=public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
         refresh_token = Authorize.create_refresh_token(subject=public_key, algorithm=Authorize.get_config().authjwt_algorithm, key=private_key)
-        keys["public_key"] = public_key
-        keys["private_key"] = private_key
+        keys[0] = public_key
+        keys[1] = private_key
         return {"access_token": access_token, "refresh_token": refresh_token}
     return {"response":"failed"}
 
@@ -82,7 +82,7 @@ async def last_eight(Authorize: AuthJWT = Depends()):
 @app.get("/query")#dashboard query result
 async def get_last_five_blocks():
     last_five_blocks = await api.query_blocks()
-    return last_five_blocks
+    return {"response":last_five_blocks}
 
 #########################Analysis##############################
 @app.get("/backends")
@@ -174,11 +174,16 @@ async def get_database_size():
     return {"size": row}
 ##########################################################################
 @app.get("/get_peers") 
-async def get_peers():
-    peers = await api.peers()
-    return peers
+def get_peers():
+    peers = api.peers()
+    return {"response":peers}
 
-@app.get("/get_traffic")
-async def get_peers():
-    response = await api.get_total_traffic()
-    return response
+@app.get("/get_total_traffic")
+def get_peers():
+    response = api.get_total_traffic()
+    return {"response":response}
+
+@app.get("/get_dynamic_traffic")
+def get_peers():
+    response = api.get_dynamic_traffic()
+    return {"response":response}
