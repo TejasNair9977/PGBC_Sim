@@ -4,15 +4,15 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    BarElement,
     Title,
     Tooltip,
     Legend,
     LineElement,
     PointElement,
  } from 'chart.js';
-import './index.scss'
- ChartJS.register(
+import './index.scss';
+
+ChartJS.register(
     CategoryScale,
     LinearScale,
     LineElement,
@@ -20,54 +20,77 @@ import './index.scss'
     Tooltip,
     Legend,
     PointElement
- );
+);
 
-function TrafficChart() {
+const DynamicTrafficChart = () => {
   const [chartData, setChartData] = useState({
     labels: [],
-    datasets: [
-      {
-        label: 'Minute',
-        data: [],
-        borderColor: '#673ab4',
-        tension: 0.1,
-        fill: false,
-      },
-    ],
+    datasets: [{
+      label: 'Traffic Data',
+      data: [],
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1
+    }]
   });
 
-  const [selectedRange, setSelectedRange] = useState(1);
-
-  const handleButtonClick = (range) => {
-    setSelectedRange(range);
+  const chartOptions = {
+    scales: {
+      xAxes: [{
+        type: 'realtime',
+        realtime: {
+          delay: 1000,
+          pause: false,
+          onRefresh: function(chart) {
+            chart.data.datasets.forEach(function(dataset) {
+              dataset.data.push({
+                x: Date.now(),
+                y: dataset.lastValue
+              });
+            });
+          }
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://127.0.0.1:8000/get_traffic');
-      const data = await response.json();
-
-      setChartData((prevState) => ({
-        ...prevState,
-        labels: [...Array(data.minute.length).keys()].map((i) => `${i}:00`),
-        datasets: [
-          {
+      try {
+        const response = await fetch('http://localhost:8000/get_dynamic_traffic');
+        const data = await response.json();
+        setChartData(prevState => ({
+          ...prevState,
+          labels: [...prevState.labels, new Date().toLocaleTimeString()],
+          datasets: [{
             ...prevState.datasets[0],
-            data: data.minute,
-          },
-        ],
-      }));
+            data: [...prevState.datasets[0].data, data.response.second]
+          }]
+        }));
+      } catch (error) {
+        console.error(error);
+      }
     };
 
-    fetchData();
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
-    <div className='traffic-graph'>
-      <Line data={chartData} options={{ maintainAspectRatio: false }} />
+    <div className="chart-container">
+      <Line className='Line' data={chartData} options={chartOptions} />
     </div>
   );
-}
+};
 
-export default TrafficChart;
+export default DynamicTrafficChart;

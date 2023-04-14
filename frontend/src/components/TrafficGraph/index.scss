@@ -1,7 +1,9 @@
-.traffic-graph {
-    height: 80%;
-    width: 80%;
-    Line {
-        height: 70%;
+.chart-container {
+    height: 90%;
+    width: 70%;
+
+    .Line {
+        height: 90%;
+        width: 70%;
     }
 }

@@ -12,6 +12,7 @@
       display: inline-flex;
       flex-direction: row;
       align-items: center;
+      justify-content:flex-end;
 
         input {
         box-sizing: border-box;
@@ -25,14 +26,17 @@
         height: 45px;
         border-radius: 20px;
       }
+
+      button {
+        background-color: #1c1c25;
+        border: 0;
+        position: relative;
+        right: 6%;
+
+      }
     
 
-        #search {
-          position: relative;
-          right: 6%;
-          width: 25px;
-          height: 25px;
-        }
+        
     
   }
   
