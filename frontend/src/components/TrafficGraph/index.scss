@@ -1,9 +1,9 @@
 .chart-container {
-    height: 90%;
-    width: 70%;
-
-    .Line {
-        height: 90%;
-        width: 70%;
-    }
-}
+    height: 80%;
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
