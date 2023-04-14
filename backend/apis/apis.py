@@ -44,7 +44,6 @@ def minutetime():
     try:
         temp=st_activity
         activity.append(st_activity)
-        st_activity = 0
         activity.pop(0)
     except UnboundLocalError:
         print("Please initialize your node by calling the / API")
