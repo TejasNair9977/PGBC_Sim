@@ -1,35 +1,24 @@
-import React from 'react'
-import classes from "./animateAndTitle.module.css"
-import ParticlesContainer from '../UI/Particles'
-import lottie from "../../animation/lottie.json"
-import Lottie from 'react-lottie'
+import React from 'react';
+import classes from './animateAndTitle.module.css';
+import ParticlesContainer from '../UI/Particles';
+import lottie from '../../animation/lottie.json';
+import { Player } from '@lottiefiles/react-lottie-player';
 
-const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: lottie,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  }
-
-
-
-
-  const AnimateAndTitle = () => {
-    return(<>
-        <ParticlesContainer></ParticlesContainer>
-        <div className={classes.animate}>
-            <Lottie
-                options={defaultOptions}
-                height={500}
-                width={700}
-            /><div>PGBC</div>
-
-        </div>
-    </>)
-}
-
-
+const AnimateAndTitle = () => {
+  return (
+    <>
+      <ParticlesContainer />
+      <div className={classes.animate}>
+        <Player
+          autoplay
+          loop
+          src={lottie}
+          style={{ height: '500px', width: '700px' }}
+        />
+        <div>PGBC</div>
+      </div>
+    </>
+  );
+};
 
 export default AnimateAndTitle;
