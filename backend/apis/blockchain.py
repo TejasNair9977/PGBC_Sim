@@ -2,7 +2,6 @@ import datetime
 import hashlib
 import json
 
-
 class Blockchain:
     def __init__(self):
         self.chain = []
@@ -20,6 +19,8 @@ class Blockchain:
         return new_proof
 
     def create_block(self, data):
+        if len(data)>400:
+            data = json.loads(data)
         prev_proof = self.print_previous_block()["proof"]
         new_proof=self.proof_of_work(prev_proof)   
         block = {'index': len(self.chain) + 1,

@@ -27,12 +27,12 @@ async def root():
 
 @app.get("/change")
 async def root():
-    print(api.change())
+    print(await api.change())
     return {"message": "There was a change in the database"}
 
 @app.post("/remotechange")
-async def root(block:Block):
-    response = await api.makechange(block)
+async def root(block:Block, size=int):
+    response = await api.makechange(block, size)
     return {"status":response}
 
 @app.post('/login')#login page
@@ -80,8 +80,8 @@ async def last_eight(Authorize: AuthJWT = Depends()):
     return {"last_eight": public_key_bytes[-8:].decode()}
 
 @app.get("/query")#dashboard query result
-async def get_last_five_blocks():
-    last_five_blocks = await api.query_blocks()
+def get_last_five_blocks():
+    last_five_blocks = api.query_blocks()
     return {"response":last_five_blocks}
 
 #########################Analysis##############################

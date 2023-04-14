@@ -13,10 +13,11 @@ from fastapi import HTTPException
 
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
-peers = ["26.225.70.86"]
+peers = []
 bc = Blockchain()
 keys = [0,0]
 def check_pass(pasw):
+    global shared_secret
     if pasw == shared_secret:
         return True
     return False
@@ -24,9 +25,24 @@ def check_pass(pasw):
 activity = [0 for _ in range(60)]
 
 st_activity = 0
+temp=0
+
+def addact():
+    global temp
+    global st_activity
+    try:
+        st_activity+=1
+    except UnboundLocalError:
+        print("Initializing Activity")
+        temp=0
+        st_activity=0
+
 
 def minutetime():
+    global temp
+    global st_activity
     try:
+        temp=st_activity
         activity.append(st_activity)
         st_activity = 0
         activity.pop(0)
@@ -37,19 +53,19 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(minutetime, 'interval', minutes=1)
 scheduler.start()
 
-def addact():
-    activity[-1]+=1
-
 def initiate():
+    global keys
     addact()
     keys[0], keys[1] = generate_key_pair()
     return {"Connection status":"Successful"}
 
 def ret_keypair():
+    global keys
     addact()
     return {"public_key":keys[0],"private_key":keys[1]}
 
-def change():
+async def change():
+    global bc
     addact()
     if platform.system() == 'Windows':
         list_of_files = glob.glob('C:/Program Files/PostgreSQL/*/data/log/*')
@@ -67,14 +83,15 @@ def change():
         except OSError:
             file.seek(0)
         last_line = file.readline().decode()
-    print(last_line)
     block = bc.create_block(last_line)
     responses=  []
+    data = {
+        "block":block,
+        "size":len(bc.chain)
+    }
     for ip in peers:
-        print("http://"+ip+":8000/remotechange")
-        response = requests.post("http://"+ip+":8000/remotechange", block)
+        response = await requests.post("http://"+ip+":8000/remotechange", json=data)
         responses.append(response)
-    print(bc.print_previous_block())
     return {"new block":block}
 
 async def connect_to_db():
@@ -111,17 +128,24 @@ def generate_key_pair():
     return private_pem, public_pem
 
 
-async def makechange(block):
+async def makechange(block, size):
     addact()
     conn = await connect_to_db()
-    print(type(block))
-    bc.chain.append(block)
-    response = await conn.fetch(block.data.message[11:])
+    if size>len(bc.chain):
+        bc.chain.append(block)
+        if block.data.message[11:17].strip()=="insert":
+            response = await conn.execute(block.data.message[11:])
+        elif block.data.message[11:17].strip()=="update":
+            response = await conn.execute(block.data.message[11:])
+        elif block.data.message[11:17].strip()=="delete":
+            response = await conn.execute(block.data.message[11:])
+    else:
+        return {'response':"already have data"}
     return {'new_block':response}
 
 def query_blocks():
     addact()
-    last_five = bc.return_last_five()
+    last_five = bc.return_last_five(bc.chain)
     return {"last_five_blocks": last_five}
 
 def return_peers():
@@ -132,4 +156,4 @@ def get_total_traffic():
     return {"minute":activity}
 
 def get_dynamic_traffic():
-    return {"second":st_activity}
+    return {"second":[st_activity,temp]}
