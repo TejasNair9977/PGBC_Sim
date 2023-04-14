@@ -13,9 +13,10 @@ from fastapi import HTTPException
 
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
-peers = []
+# peers = [os.getenv("PEER1")]
+peers=[]
 bc = Blockchain()
-keys = [0,0]
+keys = ["0","0"]
 def check_pass(pasw):
     global shared_secret
     if pasw == shared_secret:
@@ -61,7 +62,7 @@ def initiate():
 def ret_keypair():
     global keys
     addact()
-    return {"public_key":keys[0],"private_key":keys[1]}
+    return keys[0], keys[1]
 
 async def change():
     global bc
@@ -83,13 +84,14 @@ async def change():
             file.seek(0)
         last_line = file.readline().decode()
     block = bc.create_block(last_line)
+    print(block)
     responses=  []
     data = {
         "block":block,
         "size":len(bc.chain)
     }
     for ip in peers:
-        response = await requests.post("http://"+ip+":8000/remotechange", json=data)
+        response = requests.post("http://"+ip+":8000/remotechange", json=data)
         responses.append(response)
     return {"new block":block}
 
@@ -124,10 +126,13 @@ def generate_key_pair():
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     ).decode('utf-8')
-    return private_pem, public_pem
+    return public_pem, private_pem
 
 
-async def makechange(block, size):
+async def makechange(json_data):
+    print(json_data)
+    size = json_data["size"]
+    block = json_data["block"]
     addact()
     conn = await connect_to_db()
     if size>len(bc.chain):
