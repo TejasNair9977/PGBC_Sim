@@ -31,7 +31,7 @@ async def root():
     return {"message": "There was a change in the database"}
 
 @app.post("/remotechange")
-async def root(block:Block, size=int):
+async def root(block:Block, size:int):
     response = await api.makechange(block, size)
     return {"status":response}
 
