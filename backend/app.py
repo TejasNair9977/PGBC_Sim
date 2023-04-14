@@ -57,13 +57,6 @@ def get_last_five_blocks():
     return {"response":last_five_blocks}
 
 #########################Analysis##############################
-@app.get("/backends")
-async def get_backends():
-    conn = await api.connect_to_db()
-    backend_count = await conn.fetchval("SELECT COUNT(*) FROM pg_stat_activity;")
-    await conn.close()
-    return {"backends": backend_count}
-
 @app.get("/xact_committed")
 async def get_xact_committed():
     conn = await api.connect_to_db()
