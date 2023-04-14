@@ -16,7 +16,8 @@
         border-radius: 5px;
         width: 89vw;
         height: auto;
-        min-height: 82.93706293706294vh;
+        flex-grow: 1;
+        min-height: 100.93706293706294vh;
         padding-top: 5vh;
         justify-content: center;
     
@@ -84,7 +85,7 @@
             align-items: center;
             width: auto;
             height: auto;
-            min-width: 90%;
+            min-width: 95%;
             min-height: 40%;
             margin-bottom: 5vh;
             background-color: #DCDCDC;

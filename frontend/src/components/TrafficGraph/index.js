@@ -28,8 +28,8 @@ const DynamicTrafficChart = () => {
     datasets: [{
       label: 'Traffic Data',
       data: [],
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      borderColor: 'rgba(255, 99, 132, 1)',
+      backgroundColor: '#673ab4',
+      borderColor: '#673ab4',
       borderWidth: 1
     }]
   });
@@ -54,7 +54,6 @@ const DynamicTrafficChart = () => {
       yAxes: [{
         ticks: {
           beginAtZero: true,
-          min: 0
         }
       }]
     }
@@ -84,15 +83,30 @@ const DynamicTrafficChart = () => {
         console.error(error);
       }
     };
-
-    const intervalId = setInterval(() => {
+  
+    const updateIntervalId = setInterval(() => {
       fetchData();
     }, 1000);
-
+  
+    const resetIntervalId = setInterval(() => {
+      setChartData({
+        labels: [],
+        datasets: [{
+          label: 'Traffic Data',
+          data: [],
+          backgroundColor: '#673ab4',
+          borderColor: '#673ab4',
+          borderWidth: 1
+        }]
+      });
+    }, 60000);
+  
     return () => {
-      clearInterval(intervalId);
+      clearInterval(updateIntervalId);
+      clearInterval(resetIntervalId);
     };
   }, []);
+  
 
   return (
     <div className="chart-container">
