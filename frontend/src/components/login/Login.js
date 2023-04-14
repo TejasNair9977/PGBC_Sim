@@ -56,6 +56,30 @@ const handleSubmit = (event) => {
     console.log(error.response.data);
   });
 
+//   const handleSubmit =async (event) => {
+//     event.preventDefault();
+//     const data = new FormData(event.currentTarget);
+//     const username = data.get('username');
+//     const password = data.get('password')
+//     const raw = JSON.stringify({username:username,password:password})
+//     console.log(raw);
+
+//     const response = await fetch('http://127.0.0.1:8000/login', {
+//         method: 'POST',
+//         body: raw,
+//         headers: myHeaders,
+        
+//       })
+//     const Data = await response.json();
+//     if(Data){
+//         localStorage.setItem('access_token', response.data.access_token);
+//         localStorage.setItem('refresh_token', response.data.refresh_token);
+//         localStorage.setItem('name',Data.username)
+//         nav('/')
+//     }
+//     console.log(Data);
+// }
+
   
 
 }
