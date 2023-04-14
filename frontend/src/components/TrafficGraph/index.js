@@ -53,25 +53,33 @@ const DynamicTrafficChart = () => {
       }],
       yAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+          min: 0
         }
       }]
     }
   };
 
   useEffect(() => {
+    let prevSeconds = null;
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8000/get_dynamic_traffic');
         const data = await response.json();
-        setChartData(prevState => ({
-          ...prevState,
-          labels: [...prevState.labels, new Date().toLocaleTimeString()],
-          datasets: [{
-            ...prevState.datasets[0],
-            data: [...prevState.datasets[0].data, data.response.second]
-          }]
-        }));
+        const seconds = data.response.second[0];
+        const temp = data.response.second[1];
+        if (prevSeconds !== null) {
+          const diff = seconds - prevSeconds;
+          setChartData(prevState => ({
+            ...prevState,
+            labels: [...prevState.labels, new Date().toLocaleTimeString()],
+            datasets: [{
+              ...prevState.datasets[0],
+              data: [...prevState.datasets[0].data, diff]
+            }]
+          }));
+        }
+        prevSeconds = seconds;
       } catch (error) {
         console.error(error);
       }
