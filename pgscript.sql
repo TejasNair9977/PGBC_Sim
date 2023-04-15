@@ -6,4 +6,4 @@ CREATE FUNCTION public.notify() RETURNS trigger LANGUAGE 'plpgsql' AS $FUNCTION$
 CREATE TRIGGER update AFTER UPDATE ON example_table FOR EACH ROW EXECUTE PROCEDURE notify();
 CREATE TRIGGER remove AFTER DELETE ON example_table FOR EACH ROW EXECUTE PROCEDURE notify();
 CREATE TRIGGER change AFTER INSERT ON example_table FOR EACH ROW EXECUTE PROCEDURE notify();
-ALTER DATABASE example_table SET log_statement = 'all';
+ALTER DATABASE testdb SET log_statement = 'all';
