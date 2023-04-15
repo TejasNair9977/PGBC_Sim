@@ -2,7 +2,7 @@ const { Client } = require('pg')
 const axios = require('axios');
 require('dotenv').config()
 const config={
-    user: process.env.USER,
+    user: process.env.USERN,
     password: process.env.PASSWORD,
     port:process.env.PORT,
     host:process.env.HOST,
