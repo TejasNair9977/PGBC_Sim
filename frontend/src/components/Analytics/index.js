@@ -1,17 +1,27 @@
 import './index.scss'
-import TupleGraph from '../TupleGraph'
+import TuplesReturned from '../TuplesReturned'
+import TuplesFetched from '../TuplesFetched'
+import TuplesInserted from '../TuplesInserted'
+import TuplesUpdated from '../TuplesUpdated'
+import TuplesDeleted from '../TuplesDeleted'
 
 const Analytics = () => {
   return (
     <div className='Analytics-container'>
         <div className='square-box'>
-            <TupleGraph />
+          <TuplesReturned />
         </div>
         <div className='square-box'>
-            Graph
+          <TuplesFetched />
         </div>
         <div className='square-box'>
-            Graph
+          <TuplesInserted />
+        </div>
+        <div className='square-box'>
+          <TuplesUpdated />
+        </div>
+        <div className='square-box'>
+          <TuplesDeleted />
         </div>
     </div>
   )
