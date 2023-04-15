@@ -1,6 +1,7 @@
 # this will define the APIs
 import os
 import glob
+import json
 from apis.blockchain import Blockchain
 import requests
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -13,8 +14,8 @@ from fastapi import HTTPException
 
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
-# peers = [os.getenv("PEER1")]
-peers=[]
+# peers = [os.getenv("PEER1"),os.getenv("PEER2")]
+peers=[os.getenv("PEER1")]
 bc = Blockchain()
 keys = ["0","0"]
 def check_pass(pasw):
@@ -98,7 +99,7 @@ async def change():
 async def connect_to_db():
     addact()
     conn = await asyncpg.connect(
-        user=os.getenv("USER"),
+        user=os.getenv("USERN"),
         password=os.getenv("PASSWORD"),
         host=os.getenv("HOST"),
         port=os.getenv("PORT"),
@@ -130,19 +131,15 @@ def generate_key_pair():
 
 
 async def makechange(json_data):
-    print(json_data)
-    size = json_data["size"]
-    block = json_data["block"]
+    req=json.loads(json_data)
+    size = req["size"]
+    block = req["block"]
     addact()
     conn = await connect_to_db()
     if size>len(bc.chain):
         bc.chain.append(block)
-        if block.data.message[11:17].strip()=="insert":
-            response = await conn.execute(block.data.message[11:])
-        elif block.data.message[11:17].strip()=="update":
-            response = await conn.execute(block.data.message[11:])
-        elif block.data.message[11:17].strip()=="delete":
-            response = await conn.execute(block.data.message[11:])
+        statement = block["data"]["message"][11:]
+        response = await conn.execute(statement)
     else:
         return {'response':"already have data"}
     return {'new_block':response}

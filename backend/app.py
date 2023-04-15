@@ -1,9 +1,7 @@
-from fastapi import FastAPI, Depends, Request, Body
+from fastapi import FastAPI, Request
 from apis import apis as api
-from models.settings import Settings
 from models.request import Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 keys=["0","0"]
 
@@ -54,6 +52,7 @@ async def last_eight():
 @app.get("/query")#dashboard query result
 def get_last_five_blocks():
     last_five_blocks = api.query_blocks()
+    
     return {"response":last_five_blocks}
 
 #########################Analysis##############################
@@ -123,7 +122,7 @@ async def get_deleted_tuples():
 ##########################################################################
 @app.get("/get_peers") 
 def get_peers():
-    peers = api.peers()
+    peers = api.return_peers()
     return {"response":peers}
 
 @app.get("/get_total_traffic")
