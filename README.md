@@ -13,36 +13,21 @@ The way this can be used is:-
 * E-commerce platforms, where a ledger system can help manage transactions between buyers and sellers and ensure the accuracy of inventory and shipping information.
 * Cryptocurrency and blockchain systems, where a ledger system is used to record all transactions on the network and ensure the accuracy and security of the system.
 
-## Instructions
-### Do these in order in root directory to install
+# Instructions
+## Do these in order in root directory to install
 
-<pre><code>psql -U postgres
-
-{password}
-
-\c {database_name}
-
-CREATE FUNCTION public.notify() RETURNS trigger LANGUAGE 'plpgsql' AS `$FUNCTION$` BEGIN PERFORM pg_notify('change', row_to_json(NEW)::text); RETURN NEW; END; `$FUNCTION$`;
-
-CREATE TRIGGER update AFTER UPDATE ON {table_name} FOR EACH ROW EXECUTE PROCEDURE notify()
-
-CREATE TRIGGER remove AFTER DELETE ON {table_name} FOR EACH ROW EXECUTE PROCEDURE notify()
-
-CREATE TRIGGER change AFTER INSERT ON {table_name} FOR EACH ROW EXECUTE PROCEDURE notify()
-
-exit
-
-cd backend
-
-node listen.js
+## For Windows:
+Execute this in the base folder
+<pre><code>psql -U postgres -f pgscript.sql
 </code></pre>
-
-TBD for now!!
 
 After installing PostgreSQL
 Make sure to change log_collector to "on", log_statement to "all", log_destination to "jsonlog" in PostgreSQL's config
 
-## Functionalities
+## For UNIX based OS:
+Run `./install.sh` to install it in one command
+
+# Functionalities
 The functionalities are listed as:-
 * Recording transactions: The system should be able to record all types of transactions, including sales, purchases, transfers, and other financial events.
 * Immutable records: The records should be immutable, meaning that once a transaction is recorded, it cannot be altered or deleted. This ensures that the data is accurate and cannot be tampered with.
@@ -51,6 +36,3 @@ Reporting and analysis: The system should be able to generate reports and provid
 * User management: The system should have user management functionalities, including user authentication and authorization, role-based access controls, and audit logs.
 * Auditing and compliance: The system should have auditing and compliance functionalities, including the ability to track changes, generate audit trails, and maintain compliance with regulatory requirements.
 * Backup and recovery: The system should have backup and recovery functionalities to ensure that data is recoverable in the event of a disaster or data loss. (Potentially to be added)
-
-### To be added
-We will add encryption for security, frontend for having something to show visually, and  transaction approvals in order to make sure that all new transactions are correct, and finally implementing these within GCP and AMD instances within these next 2 weeks.
