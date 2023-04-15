@@ -1,6 +1,8 @@
 #! /bin/bash
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null
 sudo apt update
-sudo apt install python3-pip python3 nodejs postgresql postgresql-contrib
+sudo apt install python3-pip python3 nodejs postgresql postgresql-contrib -y
 sudo pip3 install uvicorn
 cp pgscript.sql /var/lib/postgresql
 cd /var/lib/postgresql
