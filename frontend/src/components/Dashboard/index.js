@@ -1,10 +1,23 @@
 import './index.scss'
 import TrafficChart from '../TrafficGraph';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 const Dashboard = () => {
   const [timeRange , setTimeRange] = useState('24HR');
+  const [peers, setPeers] = useState([]);
+  const [lastFiveBlocks, setLastFiveBlocks] = useState([]);
+
+  useEffect(() => {
+    axios.get('/get_peers').then((response) => {
+      setPeers(response.data);
+    });
+
+    axios.get('/query').then((response) => {
+      setLastFiveBlocks(response.data);
+    });
+  }, []);
 
   const handleButtonClick = (event) => {
     setTimeRange(event.target.value);
@@ -31,14 +44,22 @@ const Dashboard = () => {
     </div>
 
     <div className='square-box timegraph'>
-                  {/* get */}
         <span>SQL Query</span>
-        </div>
+        <ul>
+          {lastFiveBlocks.map((block, index) => (
+            <li key={index}>{block}</li>
+          ))}
+        </ul>
+      </div>
 
-        <div className='square-box leaderboard'>
-                      {/* get */}
-          <span>Leaderboard</span>
-        </div>
+    <div className='square-box leaderboard'>
+        <span>Leaderboard</span>
+        <ul>
+          {peers.map((peer, index) => (
+            <li key={index}>{peer}</li>
+          ))}
+        </ul>
+    </div>
     </div>
 
 
