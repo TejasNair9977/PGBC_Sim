@@ -1,10 +1,11 @@
 import './index.scss'
+import TupleGraph from '../TupleGraph'
 
 const Analytics = () => {
   return (
     <div className='Analytics-container'>
         <div className='square-box'>
-            Graph
+            <TupleGraph />
         </div>
         <div className='square-box'>
             Graph

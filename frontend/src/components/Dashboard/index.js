@@ -1,13 +1,11 @@
 import './index.scss'
-import TrafficChart from '../TrafficGraph';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import DynamicTrafficChart from '../TrafficGraph';
 
 const Dashboard = () => {
-  const [timeRange , setTimeRange] = useState('24HR');
-  const [peers, setPeers] = useState([]);
-  const [lastFiveBlocks, setLastFiveBlocks] = useState([]);
+  const [peers, setPeers] = useState([]); // Leaderboard
+  const [lastFiveBlocks, setLastFiveBlocks] = useState([]); //Queries
 
   useEffect(() => {
     axios.get('/get_peers').then((response) => {
@@ -19,51 +17,41 @@ const Dashboard = () => {
     });
   }, []);
 
-  const handleButtonClick = (event) => {
-    setTimeRange(event.target.value);
-  };
-
   return (
     <div className='container-dashboard'>
       <div className='chart-box'>
-          <div id="blackbox1">
-            {/* get */}
-              <span id="bbspan1">TRAFFIC</span> {/*Here will be one API endpoint*/}
-          </div>
-
-            <ul>
-              <li><button value='1HR' onClick = {handleButtonClick}>1H</button></li>
-              <li><button value='3HR' onClick = {handleButtonClick}>3H</button></li>
-              <li><button value='12HR' onClick = {handleButtonClick}>12H</button></li>
-              <li><button value='24HR' onClick = {handleButtonClick}>24H</button></li>
-            </ul>
-            
-          <div className='graph'>
-            <h2>Traffic Chart</h2>
-            <TrafficChart /></div>
-    </div>
-
-    <div className='square-box timegraph'>
-        <span>SQL Query</span>
+        <div id="blackbox1">
+          <span id="bbspan1">TRAFFIC</span>
+        </div>
         <ul>
+          <li>1H</li>
+          <li>3H</li>
+          <li>12H</li>
+          <li>24H</li>
+        </ul>
+        <div className='graph'><DynamicTrafficChart /></div>
+      </div>
+
+      <div className='square-box timegraph'>
+        <span>SQL Query</span>
+        <ol>
           {lastFiveBlocks.map((block, index) => (
             <li key={index}>{block}</li>
           ))}
-        </ul>
+        </ol>
       </div>
 
-    <div className='square-box leaderboard'>
+      <div className='square-box leaderboard'>
         <span>Leaderboard</span>
-        <ul>
+        <ol>
           {peers.map((peer, index) => (
             <li key={index}>{peer}</li>
           ))}
-        </ul>
+        </ol>
+      </div>
     </div>
-    </div>
+  );
+};
 
+export default Dashboard;
 
-  )
-}
-
-export default Dashboard
