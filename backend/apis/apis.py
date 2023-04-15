@@ -15,7 +15,7 @@ from fastapi import HTTPException
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
 # peers = [os.getenv("PEER1"),os.getenv("PEER2")]
-peers=[os.getenv("PEER1")]
+peers=[]
 bc = Blockchain()
 keys = ["0","0"]
 def check_pass(pasw):
