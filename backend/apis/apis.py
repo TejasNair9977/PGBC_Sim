@@ -136,12 +136,12 @@ async def makechange(json_data):
 
     addact()
     conn = await connect_to_db()
-    if bc.print_previous_block()!=block:
+    if bc.print_previous_block()["data"]["message"]!=block["data"]["message"]:
         bc.chain.append(block)
         statement = block["data"]["message"][11:]
         response = await conn.execute(statement)
     else:
-        return {'response':"already have data"}
+        return "already have data"
     return {'new_block':response}
 
 def query_blocks():
