@@ -8,12 +8,13 @@ const Dashboard = () => {
   const [lastFiveBlocks, setLastFiveBlocks] = useState([]); //Queries
 
   useEffect(() => {
-    axios.get('/get_peers').then((response) => {
-      setPeers(response.data);
+    axios.get('http://localhost:8000/get_peers').then((response) => {
+      setPeers(response.data.response.peers)
+
     });
 
-    axios.get('/query').then((response) => {
-      setLastFiveBlocks(response.data);
+    axios.get('http://localhost:8000/query').then((response) => {
+      setLastFiveBlocks(response.data.response);
     });
   }, []);
 
@@ -34,20 +35,20 @@ const Dashboard = () => {
 
       <div className='square-box timegraph'>
         <span>SQL Query</span>
-        <ol>
-          {lastFiveBlocks.map((block, index) => (
-            <li key={index}>{block}</li>
+        <ul>
+        {lastFiveBlocks.map((query, index) => (
+           <li key={index}>{query.message} <br/> {query.timestamp}</li>
           ))}
-        </ol>
+        </ul>
       </div>
 
       <div className='square-box leaderboard'>
         <span>Leaderboard</span>
-        <ol>
+        <ul>
           {peers.map((peer, index) => (
             <li key={index}>{peer}</li>
           ))}
-        </ol>
+        </ul>
       </div>
     </div>
   );
