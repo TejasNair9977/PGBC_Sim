@@ -16,7 +16,7 @@ import copy
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
 # peers = [os.getenv("PEER1"),os.getenv("PEER2")]
-peers=[]
+peers=["26.102.30.60"]
 bc = Blockchain()
 keys = ["0","0"]
 def check_pass(pasw):
@@ -87,14 +87,14 @@ async def change():
         last_line = file.readline().decode()
     block = bc.create_block(last_line)
     print(block)
-    # responses=  []
-    # data = {
-    #     "block":block,
-    #     "size":len(bc.chain)
-    # }
-    # for ip in peers:
-    #     response = requests.post("http://"+ip+":8000/remotechange", json=data)
-    #     responses.append(response)
+    responses=  []
+    data = {
+        "block":block,
+        "size":len(bc.chain)
+    }
+    for ip in peers:
+        response = requests.post("http://"+ip+":8000/remotechange", json=data)
+        responses.append(response)
     return {"new block":block}
 
 async def connect_to_db():
@@ -133,11 +133,10 @@ def generate_key_pair():
 
 async def makechange(json_data):
     req=json.loads(json_data)
-    size = req["size"]
     block = req["block"]
     addact()
     conn = await connect_to_db()
-    if size>len(bc.chain):
+    if bc.print_previous_block()!=block:
         bc.chain.append(block)
         statement = block["data"]["message"][11:]
         response = await conn.execute(statement)
