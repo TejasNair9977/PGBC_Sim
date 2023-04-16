@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from apis import apis as api
 from models.request import Request
 from fastapi.middleware.cors import CORSMiddleware
+import socket
 
 keys=["0","0"]
 
@@ -61,63 +62,63 @@ async def get_xact_committed():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select xact_commit from pg_stat_database;")
     await conn.close()
-    return {"xact_committed": rows[4]["xact_commit"]}
+    return {"xact_committed": rows[5]["xact_commit"]}
 
 @app.get("/xact_rolled_back")
 async def get_xact_rolled_back():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select xact_rollback from pg_stat_database;")
     await conn.close()
-    return {"xact_rolled_back": rows[4]["xact_rollback"]}
+    return {"xact_rolled_back": rows[5]["xact_rollback"]}
 
 @app.get("/blocks_read")
 async def get_blocks_read():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select blks_read from pg_stat_database;")
     await conn.close()
-    return {"blocks_read": rows[4]["blks_read"]}
+    return {"blocks_read": rows[5]["blks_read"]}
 
 @app.get("/blocks_hit")
 async def get_blocks_hit():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select blks_hit from pg_stat_database;")
     await conn.close()
-    return {"blocks_hit": rows[4]["blks_hit"]}
+    return {"blocks_hit": rows[5]["blks_hit"]}
 
 @app.get("/tuples_returned")
 async def get_tuples_returned():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select tup_returned from pg_stat_database;")
     await conn.close()
-    return {"tuples_returned": rows[4]["tup_returned"]}
+    return {"tuples_returned": rows[5]["tup_returned"]}
 
 @app.get("/tuples_fetched")
 async def get_tuples_fetched():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select tup_fetched from pg_stat_database;")
     await conn.close()
-    return {"tuples_fetched": rows[4]["tup_fetched"]}
+    return {"tuples_fetched": rows[5]["tup_fetched"]}
 
 @app.get('/tuples_inserted')
 async def get_inserted_tuples():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select tup_inserted from pg_stat_database;")
     await conn.close()
-    return {"tuples_inserted": rows[4]["tup_inserted"]}
+    return {"tuples_inserted": rows[5]["tup_inserted"]}
 
 @app.get('/tuples_updated')
 async def get_updated_tuples():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select tup_updated from pg_stat_database;")
     await conn.close()
-    return {"tuples_updated": rows[4]["tup_updated"]}
+    return {"tuples_updated": rows[5]["tup_updated"]}
 
 @app.get('/tuples_deleted')
 async def get_deleted_tuples():
     conn = await api.connect_to_db()
     rows = await conn.fetch("select tup_deleted from pg_stat_database;")
     await conn.close()
-    return {"tuples_deleted": rows[4]["tup_deleted"]}
+    return {"tuples_deleted": rows[5]["tup_deleted"]}
 
 ##########################################################################
 @app.get("/get_peers") 
@@ -133,4 +134,9 @@ def get_peers():
 @app.get("/get_dynamic_traffic")
 def get_peers():
     response = api.get_dynamic_traffic()
+    return {"response":response}
+
+@app.get("/ip")
+def get_peers():
+    response = [socket.gethostbyname(socket.gethostname()),socket.gethostname()]
     return {"response":response}
