@@ -147,7 +147,11 @@ async def makechange(json_data):
 def query_blocks():
     addact()
     last_five = bc.return_last_five(bc.chain)
-    return {"last_five_blocks": last_five}
+    filtered = [{"timestamp":0, "message":"uninitialized"} for _ in range(5)]
+    for index,object in enumerate(last_five):
+        filtered[index]["timestamp"]=object["timestamp"]
+        filtered[index]["message"]=object["data"]["message"]
+    return filtered
 
 def return_peers():
     addact()
