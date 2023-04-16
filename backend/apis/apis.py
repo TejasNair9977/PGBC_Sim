@@ -15,8 +15,7 @@ import copy
 
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
-# peers = [os.getenv("PEER1"),os.getenv("PEER2")]
-peers=["26.102.30.60","26.85.167.249"]
+peers = [os.getenv("PEER1"),os.getenv("PEER2")]
 bc = Blockchain()
 keys = ["0","0"]
 def check_pass(pasw):
