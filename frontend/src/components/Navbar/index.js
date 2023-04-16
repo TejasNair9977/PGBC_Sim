@@ -21,7 +21,7 @@ const Navbar = () => {
       setLastEight(response.data.last_eight);
     });
 
-    axios.get('http://localhost:8000/ip').then((response) => {
+    axios.get(`http://${process.env.REACT_APP_OWN_IP}:8000/ip`).then((response) => {
       console.log(response);
       setIp(response.data.response[1])
     })

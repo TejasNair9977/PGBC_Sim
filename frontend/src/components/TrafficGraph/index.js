@@ -63,7 +63,8 @@ const DynamicTrafficChart = () => {
     let prevSeconds = null;
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/get_dynamic_traffic');
+        console.log(process.env.OWN_IP)
+        const response = await fetch(`http://${process.env.REACT_APP_OWN_IP}:8000/get_dynamic_traffic`);
         const data = await response.json();
         const seconds = data.response.second[0];
         const temp = data.response.second[1];

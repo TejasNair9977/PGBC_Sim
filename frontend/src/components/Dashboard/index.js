@@ -8,12 +8,12 @@ const Dashboard = () => {
   const [lastFiveBlocks, setLastFiveBlocks] = useState([]); //Queries
 
   useEffect(() => {
-    axios.get('http://localhost:8000/get_peers').then((response) => {
+    axios.get(`http://${process.env.REACT_APP_OWN_IP}:8000/get_peers`).then((response) => {
       setPeers(response.data.response.peers)
 
     });
 
-    axios.get('http://localhost:8000/query').then((response) => {
+    axios.get(`http://${process.env.REACT_APP_OWN_IP}:8000/query`).then((response) => {
       setLastFiveBlocks(response.data.response);
     });
   }, []);

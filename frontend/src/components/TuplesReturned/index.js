@@ -38,7 +38,7 @@ const TuplesReturned = () => {
   // fetch data every second and update the graph
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:8000/tuples_returned");
+      const response = await fetch(`http://${process.env.REACT_APP_OWN_IP}:8000/tuples_returned`);
       const result = await response.json();
 
       const newData = {

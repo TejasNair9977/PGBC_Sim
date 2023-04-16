@@ -39,7 +39,7 @@ const handleSubmit = (event) => {
 
   nav('/');
 
-  axios.post('http://127.0.0.1:8000/login', data, {
+  axios.post(`http://${process.env.REACT_APP_OWN_IP}:8000/login`, data, {
     headers: {
       'Content-Type': 'application/json'
     }
