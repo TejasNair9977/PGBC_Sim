@@ -86,15 +86,9 @@ async def change():
         last_line = file.readline().decode()
     block = bc.create_block(last_line)
     print(block)
-    responses=  []
-    data = {
-        "block":block,
-        "size":len(bc.chain)
-    }
     for ip in peers:
-        response = requests.post("http://"+ip+":8000/remotechange", json=data)
-        responses.append(response)
-    return {"new block":block}
+        response = requests.post("http://"+ip+":8000/remotechange", json=block)
+    return {"new block":response}
 
 async def connect_to_db():
     addact()
