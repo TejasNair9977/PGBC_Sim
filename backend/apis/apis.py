@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 import platform
 from fastapi import HTTPException
+import copy
 
 load_dotenv()
 shared_secret = os.getenv("SECRETPASS")
@@ -147,10 +148,12 @@ async def makechange(json_data):
 def query_blocks():
     addact()
     last_five = bc.return_last_five(bc.chain)
-    filtered = [{"timestamp":0, "message":"uninitialized"} for _ in range(5)]
-    for index,object in enumerate(last_five):
-        filtered[index]["timestamp"]=object["timestamp"]
-        filtered[index]["message"]=object["data"]["message"]
+    filtered = []
+    filt_buf = {"message":"", "timestamp":""}
+    for object in last_five:
+        filt_buf["timestamp"]=object["timestamp"]
+        filt_buf["message"]=object["data"]["message"]
+        filtered.append(copy.deepcopy(filt_buf))
     return filtered
 
 def return_peers():
