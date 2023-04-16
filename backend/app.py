@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from apis import apis as api
-from models.request import Request
+from models.block import Block
 from fastapi.middleware.cors import CORSMiddleware
 import socket
 
@@ -28,7 +28,7 @@ async def root():
     return {"message": "There was a change in the database"}
 
 @app.post("/remotechange")
-async def root(block:Request):
+async def root(block:Block):
     json_data = block.json()
     response = await api.makechange(json_data)
     return {"status":response}
