@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import searchpng from '../../assets/images/search.png';
-import tejas from '../../assets/images/tejas.png';
 import './index.scss';
 import axios from 'axios';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
@@ -11,6 +10,7 @@ const Navbar = () => {
   const [lastEight, setLastEight] = useState('');
   const [username, setUsername] = useState('');
   const [search, setSearch] = useState('');
+  const [ip ,setIp] = useState('');
 
   useEffect(() => {
     axios.get('/query').then((response) => {
@@ -21,10 +21,10 @@ const Navbar = () => {
       setLastEight(response.data.last_eight);
     });
 
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
+    axios.get('http://localhost:8000/ip').then((response) => {
+      console.log(response);
+      setIp(response.data.response[1])
+    })
   }, []);
 
   return (
@@ -37,7 +37,7 @@ const Navbar = () => {
       </form>
       <div id="blackbox">
         <ViewInArIcon style={{fontSize:'70px' , color:'#DCDCDC'}} />  {/* get */}
-        <span>192.168.1.127</span>
+        <span>{ip}</span>
       </div>
     </div>
   );
