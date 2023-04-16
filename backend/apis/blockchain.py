@@ -5,7 +5,7 @@ import json
 class Blockchain:
     def __init__(self):
         self.chain = []
-        self.create_block({"content": "Genesis Block"})
+        self.create_block({"message": "Genesis Block"})
 
     def proof_of_work(self, previous_proof):
         new_proof = 1
